@@ -7,8 +7,8 @@
 #include "button.h"
 
 struct page{
-    std::vector<block> blocks;
-    std::vector<button> buttons;
+    std::vector<block*> blocks;
+    std::vector<button*> buttons;
     std::vector<std::pair<SDL_FRect ,SDL_Texture*> > images;
     std::vector<std::pair<SDL_FRect ,SDL_Color> > rects;
     SDL_Color backgraund;

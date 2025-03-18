@@ -17,8 +17,8 @@
 } while(0)
 #endif
 
-int page_number;
-std::vector<page> pages;
+int page_number = 0;
+std::vector<page*> pages;
 #define y_size 750
 #define x_size 400
 SDL_Color text_color = {0,0,0,0};
@@ -46,24 +46,26 @@ SDL_AppResult  SDL_AppInit(void** appstate, int argc, char* argv[]){
         SDL_Log("Couldn't initialize TTF");
         return SDL_APP_FAILURE;
     }
-
+    pages.push_back(new page());
+    pages[0]->rend = renderer;
+    pages[0]->backgraund.a = 255; pages[0]->backgraund.g = 100; pages[0]->backgraund.b = 255; pages[0]->backgraund.r = 255;
     //инициализациыя шрифта ------------------------------------------------
     TTF_Font* font = TTF_OpenFont("fonts/main.ttf", 30);
     SDL_Surface* surf = TTF_RenderText_Solid(font, "divece", 5, text_color);
-    buttons.push_back(new button(0 , y_size*0.9, x_size/3, y_size*0.1, 0, 200, 200, 255, 0, 100, 100 ,255, 0, SDL_CreateTextureFromSurface(renderer, surf), renderer));
+    pages[0]->buttons.push_back(new button(0 , y_size*0.9, x_size/3, y_size*0.1, 0, 200, 200, 255, 0, 100, 100 ,255, 0, SDL_CreateTextureFromSurface(renderer, surf), renderer));
     SDL_DestroySurface(surf);
 
     surf = TTF_RenderText_Solid(font, "scen", 5, text_color);
-    buttons.push_back(new button(x_size/3 , y_size*0.9, x_size/3, y_size*0.1, 0, 200, 200, 255, 0, 100, 100 ,255, 0, SDL_CreateTextureFromSurface(renderer, surf), renderer));
+    pages[0]->buttons.push_back(new button(x_size/3 , y_size*0.9, x_size/3, y_size*0.1, 0, 200, 200, 255, 0, 100, 100 ,255, 0, SDL_CreateTextureFromSurface(renderer, surf), renderer));
     SDL_DestroySurface(surf);
 
     surf = TTF_RenderText_Solid(font, "settings", 5, text_color);
-    buttons.push_back(new button(x_size/3*2, y_size*0.9, x_size/3, y_size*0.1, 0, 200, 200, 255, 0, 100, 100 ,255, 0, SDL_CreateTextureFromSurface(renderer, surf), renderer));
+    pages[0]->buttons.push_back(new button(x_size/3*2, y_size*0.9, x_size/3, y_size*0.1, 0, 200, 200, 255, 0, 100, 100 ,255, 0, SDL_CreateTextureFromSurface(renderer, surf), renderer));
     SDL_DestroySurface(surf);
     //инициализациыя шрифта ------------------------------------------------
     //инициализациыя шрифта ------------------------------------------------
     surf = TTF_RenderText_Solid(font, "SWIN CHECKING", 13, text_color);
-    tert = new block(0, 0, 400, 100, 0, 200, 200, 255, 0, 100, 100, 255, 1, SDL_CreateTextureFromSurface(renderer, surf), renderer, IMG_LoadTexture(renderer, "icons/settings.png"));
+    pages[0]->blocks.push_back( new block(0, 0, 400, 100, 0, 200, 200, 255, 0, 100, 100, 255, 1, SDL_CreateTextureFromSurface(renderer, surf), renderer, IMG_LoadTexture(renderer, "icons/settings.png")));
     SDL_DestroySurface(surf);
     //инициализациыя шрифта ------------------------------------------------
 
@@ -118,14 +120,8 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event){
 int a = 1;
 SDL_AppResult SDL_AppIterate(void* appstate){
 	uint64_t b = SDL_GetTicks();
-	SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
-	SDL_RenderClear(renderer);
 
-    for(int i = 0; i < buttons.size(); ++i){
-        buttons[i]->render();
-    }
-
-    tert->render();
+    pages[0]->render();
 
 	uint64_t c = SDL_GetTicks() - b;
 	SDL_Delay(16-c);
