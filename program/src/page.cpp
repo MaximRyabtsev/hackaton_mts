@@ -23,4 +23,11 @@ void page::render(){
     for(int i = 0; i < blocks.size(); ++i){
         blocks[i]->render();
     }
+
+    for(int i = 0; i < textblocks.size(); ++i){
+        textblocks[i]->render();
+    }
+    if(func != nullptr){
+        func();
+    }
 }

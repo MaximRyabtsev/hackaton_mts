@@ -6,7 +6,7 @@
 #include <SDL3_image/SDL_image.h>
 
 struct block{
-	SDL_FRect rect; //размеры и позиция кнопки
+	SDL_FRect rect; //размеры и позиция блока
     std::pair<char, std::pair<SDL_Color, SDL_Color> > b_color; //основной цвет и цвет во время нажатия
 	char border; //наличие обводки 
     std::pair <SDL_FRect, SDL_Texture *> textt;
